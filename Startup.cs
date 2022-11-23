@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VendingMachine.EFModels;
+using VendingMachine.Models;
 
 namespace VendingMachine
 {
@@ -32,6 +33,7 @@ namespace VendingMachine
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "VendingMachine", Version = "v1" });
             });
             services.AddDbContext<ApplicationContext>();
+            services.AddSingleton<CoinBag>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
