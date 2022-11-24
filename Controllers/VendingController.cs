@@ -28,7 +28,7 @@ namespace VendingMachine.Controllers
         }
 
         [HttpPost("putCoin")]
-        public IActionResult PutCoin(int value, int count = 1)
+        public IActionResult PutCoin([FromForm] int value, int count = 1)
         {
             try
             {
@@ -36,11 +36,11 @@ namespace VendingMachine.Controllers
             }catch(Exception e) {
                 return BadRequest(new JsonResult(new { error = e.Message }));
             };
-            return Ok();
+            return Ok(_CoinBag.GetLockedMoney());
         }
 
         [HttpPost("buyDrink")]
-        public IActionResult BuyDrink(Drink Drink)
+        public IActionResult BuyDrink([FromBody] Drink Drink)
         {
             if(_CoinBag.isEnough(Drink))
             {
@@ -64,7 +64,7 @@ namespace VendingMachine.Controllers
         }
 
         [HttpPost("isThereAChange")]
-        public IActionResult IsThereAChange(Drink Drink)
+        public IActionResult IsThereAChange([FromBody] Drink Drink)
         {
             return Ok(_CoinBag.IsThereAChange(Drink.Price));
         }

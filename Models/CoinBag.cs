@@ -125,5 +125,10 @@ namespace VendingMachine.Models
                 }
             }
         }
+
+        public int GetLockedMoney()
+        {
+            return _LockedMoney;
+        }
     }
 }

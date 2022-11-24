@@ -27,6 +27,8 @@ namespace VendingMachine
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+            services.AddMvc();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,6 +50,12 @@ namespace VendingMachine
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseAuthorization();
 
