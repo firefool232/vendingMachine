@@ -19,7 +19,7 @@ namespace VendingMachine.Controllers
         }
 
         [HttpPost("addDrink")]
-        public IActionResult AddDrink(Drink Drink)
+        public IActionResult AddDrink([FromBody] Drink Drink)
         {
             int exist = _Context.Drinks.Count(val => val.Name == Drink.Name);
             if(exist > 0)
@@ -32,9 +32,9 @@ namespace VendingMachine.Controllers
         }
 
         [HttpPost("removeDrink")]
-        public IActionResult RemoveDrink(Drink Drink)
+        public IActionResult RemoveDrink([FromBody] Drink Drink)
         {
-            var exist = _Context.Drinks.Where(val => val.Name == Drink.Name).FirstOrDefault();
+            var exist = _Context.Drinks.Where(val => val.Id == Drink.Id).FirstOrDefault();
             if (exist == null)
             {
                 return BadRequest(new JsonResult(new { error = "drink not exist" }));
@@ -44,28 +44,16 @@ namespace VendingMachine.Controllers
             return Ok();
         }
 
-        [HttpPost("changePrice")]
-        public IActionResult ChangePrice(Drink Drink)
+        [HttpPost("changeDrink")]
+        public IActionResult ChangePrice([FromBody] Drink Drink)
         {
-            var exist = _Context.Drinks.Where(val => val.Name == Drink.Name).FirstOrDefault();
+            var exist = _Context.Drinks.Where(val => val.Id == Drink.Id).FirstOrDefault();
             if (exist == null)
             {
                 return BadRequest(new JsonResult(new { error = "drink not exist" }));
             }
             exist.Price = Drink.Price;
-            _Context.Drinks.Update(exist);
-            _Context.SaveChanges();
-            return Ok();
-        }
-
-        [HttpPost("changeCount")]
-        public IActionResult ChangeCount(Drink Drink)
-        {
-            var exist = _Context.Drinks.Where(val => val.Name == Drink.Name).FirstOrDefault();
-            if (exist == null)
-            {
-                return BadRequest(new JsonResult(new { error = "drink not exist" }));
-            }
+            exist.Name = Drink.Name;
             exist.Count = Drink.Count;
             _Context.Drinks.Update(exist);
             _Context.SaveChanges();
